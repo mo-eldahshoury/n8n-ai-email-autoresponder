@@ -1,0 +1,189 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "Onboarding Message",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        -128
+      ],
+      "id": "d56b7ff6-8ca8-431d-a238-7a0a90891c77",
+      "name": "Send a message",
+      "webhookId": "54747582-568e-40a5-94e9-a0f1e24c202b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "CIKvlDsNPTpagQNQ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Contact With US",
+        "formDescription": "Fill This Form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name"
+            },
+            {
+              "fieldLabel": "Last Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Your Badget",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "50 - 200$"
+                  },
+                  {
+                    "option": "200 - 500$"
+                  },
+                  {
+                    "option": "500 - 1000$"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Your Problem",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -496,
+        -128
+      ],
+      "id": "e3e9b1cb-f186-4406-b8a0-f24768419a3b",
+      "name": "On form submission",
+      "webhookId": "eb51268b-e98d-4bee-8927-c3d295fada3f"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=Customize a simple short proffesional Email using the following Variables:\n\nFirst Name: {{ $json['First Name'] }}\nEmail Adress: {{ $json.Email }}\nBudget: {{ $json['Your Badget'] }}\nNeed & Reason For Call:{{ $json['Your Problem'] }}\n\nWe're Egynt, an AI Automation Agency, Draft an Email using the client preferences, and what we will do as a solution for him, DO NOT Include the subject or any [name], end up with: \"The Egynt Team\" Only\n\nFormat the email, with an h1 html heading greeting at the beginning with: Hello \"Customer Name\" in h1 tags, and the end bold tag: \"The Egynt Team\", don't include any other html tags expect h1 and bold"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -272,
+        -128
+      ],
+      "id": "8fe7224c-070c-4f4e-9b18-716e6740c43c",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 2 Form Autoresponed \non form submission -> Chat -> Email\n",
+        "height": 96,
+        "width": 464,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -304
+      ],
+      "id": "50d3aa67-713d-4ee6-9642-23caace2568a",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "First Name": "muhammed",
+          "Last Name": "Rahman",
+          "Email": "mohammedeldahshoury5@gmail.com",
+          "Your Badget": "50 - 200$",
+          "Your Problem": "Want Ai Agent",
+          "submittedAt": "2026-11-08T21:50:15.728+02:00",
+          "formMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4c105025-66a2-47f7-adcd-fe9fa5a10a87",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5581786e656fc974f9663fa02324dd7b1446ec9afdf93d8f9052480329fcf237"
+  },
+  "nodeGroups": [],
+  "id": "fcSH1Pkky2rJNHwf",
+  "tags": []
+}
